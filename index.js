@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 require("colors");
 const PORT = process.env.PORT || 5000;
@@ -30,6 +30,33 @@ const blogCollection = client.db("LetsBlog").collection("blogs");
 // Default Route
 app.get("/", async (req, res) => {
   res.send("Welcome to Let's Blog's server side..!");
+});
+
+// Get All Blogs
+app.get("/blogs", async (req, res) => {
+  const data = await blogCollection.find({}).toArray();
+  res.status(200).send({ success: true, data });
+});
+
+// Get a Single Blog
+app.get("/blog/:id", async (req, res) => {
+  const query = { _id: ObjectId(req.params.id) };
+  const data = await blogCollection.findOne(query);
+  res.status(200).send({ success: true, data });
+});
+
+// Create a New Blog
+app.post("/add-blog", async (req, res) => {
+  const blog = req.body;
+  const data = await blogCollection.insertOne(blog);
+  res.status(200).send({ success: true, data });
+});
+
+// Delete a Blog
+app.delete("/delete-blog", async (req, res) => {
+  const query = { _id: ObjectId(req.body) };
+  const data = await blogCollection.deleteOne(query);
+  res.status(200).send({ success: true, data });
 });
 
 app.listen(PORT, () => {
