@@ -1,0 +1,27 @@
+{
+  "name": "lets-blog-backend",
+  "version": "1.0.0",
+  "description": "lets_blog backend with node.js, express.js, mongodb",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "blog",
+    "personal",
+    "blog",
+    "blog",
+    "website"
+  ],
+  "author": "Mohammad Ali (itsproali)",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongodb": "^4.12.1"
+  }
+}
