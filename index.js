@@ -25,7 +25,7 @@ const connect = async () => {
 connect();
 
 // Database Collections
-const blogCollection = client.db("LetsBlog").collection("blogs");
+const blogCollection = client.db("test").collection("blogs");
 
 // Default Route
 app.get("/", async (req, res) => {
@@ -56,6 +56,14 @@ app.post("/add-blog", async (req, res) => {
 app.delete("/delete-blog", async (req, res) => {
   const query = { _id: ObjectId(req.body) };
   const data = await blogCollection.deleteOne(query);
+  res.status(200).send({ success: true, data });
+});
+
+// Total views Increment
+app.patch("/views-increment", async (req, res) => {
+  const { _id, views } = req.body;
+  const query = { _id: ObjectId(_id) };
+  const data = await blogCollection.updateOne(query, { $set: { views } });
   res.status(200).send({ success: true, data });
 });
 
