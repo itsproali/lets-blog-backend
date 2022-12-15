@@ -38,13 +38,6 @@ app.get("/blogs", async (req, res) => {
   res.status(200).send({ success: true, data });
 });
 
-// Get a Single Blog
-app.get("/blog/:id", async (req, res) => {
-  const query = { _id: ObjectId(req.params.id) };
-  const data = await blogCollection.findOne(query);
-  res.status(200).send({ success: true, data });
-});
-
 // Create a New Blog
 app.post("/add-blog", async (req, res) => {
   const prevBlog = await blogCollection
