@@ -25,7 +25,7 @@ const connect = async () => {
 connect();
 
 // Database Collections
-const blogCollection = client.db("test").collection("blogs");
+const blogCollection = client.db("LetsBlog").collection("blogs");
 
 // Default Route
 app.get("/", async (req, res) => {
