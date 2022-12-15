@@ -47,14 +47,30 @@ app.get("/blog/:id", async (req, res) => {
 
 // Create a New Blog
 app.post("/add-blog", async (req, res) => {
-  const blog = req.body;
+  const prevBlog = await blogCollection
+    .aggregate([{ $group: { _id: null, maxBlog: { $max: "$blog_no" } } }])
+    .toArray();
+  const prevBlogNo = prevBlog[0].maxBlog;
+  const blog = { ...req.body, blog_no: prevBlogNo + 1 };
   const data = await blogCollection.insertOne(blog);
   res.status(200).send({ success: true, data });
 });
 
+// Update a blog
+app.patch("/update-blog", async (req, res) => {
+  const { _id, title, img, description, blog_no, author, views, tags } =
+    req.body;
+  const query = { _id: ObjectId(_id) };
+  const result = await blogCollection.updateOne(query, {
+    $set: { title, img, description, blog_no, author, views, tags },
+  });
+  res.status(200).send({ success: true, result });
+});
+
 // Delete a Blog
-app.delete("/delete-blog", async (req, res) => {
-  const query = { _id: ObjectId(req.body) };
+app.delete("/delete-blog/:id", async (req, res) => {
+  console.log(req.params);
+  const query = { _id: ObjectId(req.params.id) };
   const data = await blogCollection.deleteOne(query);
   res.status(200).send({ success: true, data });
 });
