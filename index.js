@@ -43,7 +43,7 @@ app.post("/add-blog", async (req, res) => {
   const prevBlog = await blogCollection
     .aggregate([{ $group: { _id: null, maxBlog: { $max: "$blog_no" } } }])
     .toArray();
-  const prevBlogNo = prevBlog[0].maxBlog;
+  const prevBlogNo = prevBlog?.length ? prevBlog[0].maxBlog : 0;
   const blog = { ...req.body, blog_no: prevBlogNo + 1 };
   const data = await blogCollection.insertOne(blog);
   res.status(200).send({ success: true, data });
